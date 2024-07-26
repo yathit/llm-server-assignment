@@ -2,3 +2,4 @@ fastapi
 openai
 pydantic
 beanie
+pytest

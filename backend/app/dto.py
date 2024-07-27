@@ -10,11 +10,12 @@ class Message(Document):
     thread_id: UUID = Field(default_factory=uuid4)
     role: str = "system"
     content: str
-    timestamp: datetime = datetime.now(timezone.utc)
+    timestamp: int = datetime.now(timezone.utc).timestamp() * 1e6
 
     class Settings:
         indexes: [
             "thread_id",
+            "timestamp",
         ]
 
     def to_dict(self) -> dict:

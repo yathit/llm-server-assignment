@@ -1,0 +1,20 @@
+
+.container {
+    display: flex;
+    flex-direction: row;
+    margin: 16px;
+}
+
+.main-content {
+    flex-grow: 1;
+}
+
+.sidebar {
+    flex-basis: 200px;
+    padding-left: 24px;
+}
+
+.history {
+    text-align: left;
+    margin: 0 24px;
+}

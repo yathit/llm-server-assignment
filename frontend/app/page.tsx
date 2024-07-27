@@ -1,24 +1,17 @@
 import Image from "next/image";
+import classes from "./page.module.css"
+import ChatPanel from "@/components/ChatPanel";
+import LlmPropertyPanel from "@/components/LlmPropertyPanel";
 
 export default function Home() {
-    let temperature = 0.8;
+
     return (
-        <main className="container">
-            <div className="main-content">
-                <div className="history">History</div>
-                <div>
-                    <input placeholder="Your question here ..."/>
-                </div>
+        <main className={classes.container}>
+            <div className={classes.mainContent}>
+                <ChatPanel/>
             </div>
-            <div className="sidebar">
-                <table>
-                    <tbody>
-                    <tr>
-                        <td>Temperature</td>
-                        <td><input value={temperature}/></td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div className={classes.sidebar}>
+                <LlmPropertyPanel />
             </div>
 
         </main>

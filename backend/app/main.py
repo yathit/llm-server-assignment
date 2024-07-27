@@ -1,8 +1,15 @@
 from fastapi import FastAPI
-from llm import complete
+
+import chatbot
+import db
 from dto import Message
 
 app = FastAPI()
+
+
+@app.on_event("startup")
+async def startup_event():
+    await db.init()
 
 
 @app.get("/")
@@ -10,7 +17,7 @@ async def root():
     return {"message": "Hello World"}
 
 
-@app.post("/message")
-async def message(message: Message):
-    resp = complete(user_content=message.content)
-    return {"message": resp}
+@app.post("/chat")
+async def chat(message: Message):
+    resp = await chatbot.complete(message)
+    return resp

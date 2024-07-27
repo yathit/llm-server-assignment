@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+body {
+
+}
+
+main {
+    margin: 24px;
+}
+
+@layer utilities {
+    .text-balance {
+        text-wrap: balance;
+    }
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+}
+
+.main-content {
+    flex-grow: 1;
+}
+
+.sidebar {
+    flex-basis: 200px;
+}
+
+.history {
+    text-align: left;
+    margin: 0 24px;
+}

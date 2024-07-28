@@ -17,6 +17,7 @@ async def complete(message: Message, session_id: str = '') -> Message:
         i = Message(content=initial_system_message, role="system")
         if message.thread_id:
             i.thread_id = message.thread_id
+            i.timestamp = message.timestamp - 1
         await i.create()
         history.insert(0, i)
         if not message.thread_id:

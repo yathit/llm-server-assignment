@@ -9,3 +9,12 @@ export type ChatMessage = {
     content: string;
     thread_id?: string;
 }
+
+export type LlmConfig = {
+    temperature: number;
+}
+
+export type UserProfile = {
+    username: string;
+    llm_config: LlmConfig
+}

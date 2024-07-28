@@ -1,12 +1,13 @@
 import llm
-from db import collect_chat_history
+from db import collect_chat_history, get_user_profile
 from dto import Message
 
 initial_system_message = ("You are a helpful assistant, take a deep breath and answer concisely. "
                           "If you don't know, say I don't know.")
 
 
-async def complete(message: Message) -> Message:
+async def complete(message: Message, session_id: str = '') -> Message:
+    user = await get_user_profile(session_id)
     if message.thread_id:
         history = await collect_chat_history(message.thread_id)
     else:
@@ -25,7 +26,7 @@ async def complete(message: Message) -> Message:
     history.append(message)
 
     messages = [x.to_dict() for x in history]
-    res = await llm.complete(messages)
+    res = await llm.complete(messages, user.llm_config)
     response = Message(thread_id=message.thread_id, content=res.content, role='assistant')
     await response.create()
     return response

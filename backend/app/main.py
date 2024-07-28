@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 import chatbot
 import db
-from dto import Message
+from dto import Message, LlmConfig
 
 app = FastAPI()
 
@@ -45,3 +45,15 @@ async def get_chat(thread_id: str) -> list[Message]:
     uid = UUID(thread_id)
     history = await db.collect_chat_history(uid)
     return history
+
+
+@app.get("/api/v1/user_profile")
+async def get_user_profile(session_id: str = ""):
+    resp = await db.get_user_profile(session_id)
+    return resp
+
+
+@app.post("/api/v1/llm_profile")
+async def post_user_profile(config: LlmConfig, session_id: str = ""):
+    resp = await db.save_llm_profile(session_id, config)
+    return resp

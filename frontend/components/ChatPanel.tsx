@@ -17,7 +17,7 @@ function HistoryPanel({history, chat}: {
         messages.push(chat);
     }
     return (
-        <ul>
+        <ul style={{minHeight: 300}}>
             {
                 messages.map((message) => (
                     <li key={message.timestamp}>{message.content}</li>
@@ -75,13 +75,10 @@ export default function ChatPanel({initialThreadId}: { initialThreadId?: string 
         }
     }, [chat, threadId])
 
-    return (<div>
-            {
-                <HistoryPanel history={history}/>
-            }
-            <div>
-                <InputWithButton onChange={onSubmit} />
-            </div>
+    return (
+        <div>
+            <HistoryPanel history={history}/>
+            <InputWithButton onChange={onSubmit}/>
         </div>
     );
 }

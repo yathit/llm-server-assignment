@@ -13,7 +13,8 @@ class Message(Document):
     timestamp: int = int(datetime.now(timezone.utc).timestamp() * 1e6)
 
     class Settings:
-        indexes: [
+        name = "message"
+        indexes = [
             "thread_id",
             "timestamp",
         ]
@@ -33,3 +34,15 @@ class ChatCompletionMessage(BaseModel):
 
     role: str
     """The role of the author of this message."""
+
+
+class LlmConfig(BaseModel):
+    temperature: float = 1.0
+
+
+class UserProfile(Document):
+    username: str
+    llm_config: LlmConfig
+
+    class Settings:
+        name = "user_profile"

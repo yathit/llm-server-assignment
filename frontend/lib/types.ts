@@ -7,5 +7,5 @@ export type ChatCompletionMessage = {
 
 export type ChatMessage = {
     content: string;
-    thread_id: string;
+    thread_id?: string;
 }

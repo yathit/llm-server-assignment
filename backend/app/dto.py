@@ -8,9 +8,9 @@ from pydantic import Field, BaseModel
 
 class Message(Document):
     thread_id: UUID = Field(default_factory=uuid4)
-    role: str = "system"
+    role: str = "user"
     content: str
-    timestamp: int = datetime.now(timezone.utc).timestamp() * 1e6
+    timestamp: int = int(datetime.now(timezone.utc).timestamp() * 1e6)
 
     class Settings:
         indexes: [

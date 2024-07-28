@@ -2,8 +2,8 @@ import '@mantine/core/styles.css';
 import React from 'react';
 import {MantineProvider, ColorSchemeScript} from '@mantine/core';
 import {theme} from '../theme';
-import {store} from './store'
-import {Provider} from 'react-redux'
+import StoreProvider from "@/app/StoreProvider";
+
 
 export const metadata = {
     title: 'LLM Chat Server',
@@ -23,9 +23,9 @@ export default function RootLayout({children}: { children: any }) {
             <title/>
         </head>
         <body>
-        <Provider store={store}>
+        <StoreProvider>
             <MantineProvider theme={theme}>{children}</MantineProvider>
-        </Provider>
+        </StoreProvider>
         </body>
         </html>
     );

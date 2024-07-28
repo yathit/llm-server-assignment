@@ -1,17 +1,19 @@
-import {useCallback, useRef, useState} from "react";
-import {useGetChatHistoryQuery, usePostChatMutation} from "@/services/chat";
-import {ChatCompletionMessage} from "@/services/types";
+'use client'
+
+import {useCallback, useEffect, useRef, useState} from "react";
+import {useGetChatHistoryQuery, usePostChatMutation} from "@/lib/features/chat";
+import {ChatCompletionMessage, ChatMessage} from "@/lib/types";
 import {Button} from "@mantine/core";
 
 
-function HistoryPanel({history, chat}: { history: ChatCompletionMessage[]|undefined , chat: ChatCompletionMessage[]|undefined }) {
-    const messages = history ?? [];
-    if (chat) {
-        chat.forEach(x => {
-            if (messages.every(i => i.timestamp != x.timestamp)) {
-                messages.push(x);
-            }
-        })
+function HistoryPanel({history, chat}: {
+    history: ChatCompletionMessage[] | undefined,
+    chat: ChatCompletionMessage | undefined
+}) {
+    let messages = history ?? [];
+    if (chat && !messages.some(x => x.timestamp)) {
+        messages = [...messages];
+        messages.push(chat);
     }
     return (
         <ul>
@@ -27,21 +29,36 @@ function HistoryPanel({history, chat}: { history: ChatCompletionMessage[]|undefi
 export default function ChatPanel({initialThreadId}: { initialThreadId?: string }) {
     const ref = useRef<HTMLInputElement>(null);
     const [threadId, setThreadId] = useState(initialThreadId ?? '');
-    const {data: history} = useGetChatHistoryQuery(threadId, {skip: !threadId});
+    const {data: history, refetch} = useGetChatHistoryQuery(threadId, {skip: !threadId});
     const [postChat, {isLoading: isPosting, data: chat}] = usePostChatMutation();
 
     const onSubmit = useCallback(() => {
         const value = ref.current?.value;
+        console.log('onSubmmit', value);
         if (!value) {
             console.warn("No message");
             return;
         }
-        postChat({content: value, thread_id: threadId});
-    }, [ref, postChat]);
+        const payload: ChatMessage = {content: value};
+        if (threadId) {
+            payload.thread_id = threadId;
+        }
+        postChat(payload);
+    }, [ref, postChat, threadId]);
+
+    useEffect(() => {
+        if (chat) {
+            if (threadId) {
+                refetch();
+            } else {
+                setThreadId(chat.thread_id);
+            }
+        }
+    }, [chat, threadId])
 
     return (<div>
             {
-                <HistoryPanel history={history} chat={chat}/>
+                <HistoryPanel history={history} chat={undefined}/>
             }
             <div>
                 <input ref={ref} placeholder={"Your question ..."} disabled={isPosting}/>

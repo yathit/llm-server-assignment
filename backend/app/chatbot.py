@@ -23,6 +23,6 @@ async def complete(message: Message) -> Message:
 
     messages = [x.to_dict() for x in history]
     res = await llm.complete(messages)
-    response = Message(thread_id=message.thread_id, content=res.content, role='user')
+    response = Message(thread_id=message.thread_id, content=res.content, role='assistant')
     await response.create()
     return response

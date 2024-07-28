@@ -27,6 +27,11 @@ pip install -r backend/requrements.txt
 
 ## Running 
 
+Run mongodb server via Docker
+
+    cd backend
+    docker compose up -d .
+
 After setup and activating the Python env, run the FastAPI server
 
     cd backend/app
@@ -37,3 +42,4 @@ After setup and activating the Python env, run the FastAPI server
 Run the tests
 
     python -m pytest ./ 
+

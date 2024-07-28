@@ -17,7 +17,6 @@ export default function LlmPropertyPanel() {
 
 function LlmProperty({userProfile}: { userProfile: UserProfile }) {
 
-
     const [postProfile, {isLoading}] = usePostLlmProfileMutation();
     const [temperature, setTemperature] = useState(userProfile.llm_config?.temperature ?? 1.0);
     const onTemperatureUpdated = useCallback((value: number) => {

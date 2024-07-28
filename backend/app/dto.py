@@ -10,7 +10,9 @@ class Message(Document):
     thread_id: UUID = Field(default_factory=uuid4)
     role: str = "user"
     content: str
-    timestamp: int = int(datetime.now(timezone.utc).timestamp() * 1e6)
+    timestamp: int = Field(
+        default_factory=lambda: int(datetime.now(timezone.utc).timestamp() * 1e6)
+    )
 
     class Settings:
         name = "message"

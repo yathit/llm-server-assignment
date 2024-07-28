@@ -52,7 +52,7 @@ function InputWithButton({onChange}: { onChange: (x: string) => void }) {
 }
 
 export default function ChatPanel({initialThreadId}: { initialThreadId?: string }) {
-
+    const [inputKey, setInputKey] = useState(1);
     const [threadId, setThreadId] = useState(initialThreadId ?? '');
     const {data: history, refetch} = useGetChatHistoryQuery(threadId, {skip: !threadId});
     const [postChat, {isLoading: isPosting, data: chat}] = usePostChatMutation();
@@ -62,7 +62,11 @@ export default function ChatPanel({initialThreadId}: { initialThreadId?: string 
         if (threadId) {
             payload.thread_id = threadId;
         }
-        postChat(payload);
+        (async function () {
+            const res = await postChat(payload);
+            setInputKey(inputKey + 1); // clear input text
+        })();
+
     }, [postChat, threadId]);
 
     useEffect(() => {
@@ -78,7 +82,7 @@ export default function ChatPanel({initialThreadId}: { initialThreadId?: string 
     return (
         <div>
             <HistoryPanel history={history}/>
-            <InputWithButton onChange={onSubmit}/>
+            <InputWithButton key={inputKey} onChange={onSubmit}/>
         </div>
     );
 }

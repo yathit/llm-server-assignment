@@ -12,11 +12,14 @@ async def complete(message: Message) -> Message:
     else:
         history = []
 
-    if not message.thread_id:
+    if not message.thread_id or len(history) == 0:
         i = Message(content=initial_system_message, role="system")
+        if message.thread_id:
+            i.thread_id = message.thread_id
         await i.create()
         history.insert(0, i)
-        message.thread_id = i.thread_id
+        if not message.thread_id:
+            message.thread_id = i.thread_id
 
     await message.create()
     history.append(message)

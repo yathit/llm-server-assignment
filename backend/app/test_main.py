@@ -46,4 +46,4 @@ def test_thread_consistency():
         resp3 = client.get(f"/api/v1/chat?thread_id={body1['thread_id']}")
         assert resp3.status_code == 200
         history = resp3.json()
-        assert len(history) == 4
+        assert len(history) == 5
